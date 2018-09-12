@@ -1,12 +1,15 @@
+const webpack = require('webpack');
 const path = require('path');
 const devMode = process.env.NODE_ENV !== 'production';
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
-  entry: './index.js', // Dau vao
+  entry: {
+    main: './src/main/index.js',
+  }, // Dau vao
   output: { // Dau ra
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
+    filename: '[name].bundle.js'
   },
   module:{
     rules:[
@@ -14,7 +17,6 @@ module.exports = {
         test: /\.(sa|sc|c)ss$/,
         use: [
         	MiniCssExtractPlugin.loader,
-          //devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
           'sass-loader'
         ]
@@ -23,8 +25,13 @@ module.exports = {
   },
   plugins: [
 	  new MiniCssExtractPlugin({
-      filename: devMode ? 'app.bundle.css' : 'app.bundle.[hash].css',
+      filename: devMode ? '[name].bundle.css' : 'app.bundle.[hash].css',
       chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
+    }),
+    new webpack.ProvidePlugin({
+      jQuery: 'jquery',
+      $: 'jquery',
+      jquery: 'jquery'
     })
 	]
 }
