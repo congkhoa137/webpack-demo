@@ -4,8 +4,10 @@ const devMode = process.env.NODE_ENV !== 'production';
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
+  mode: 'development',
   entry: {
-    main: './src/main/index.js',
+    vendor: './src/main/index.js',
+    main: './src/main/main.js',
   }, // Dau vao
   output: { // Dau ra
     path: path.resolve(__dirname, 'dist'),
@@ -27,11 +29,6 @@ module.exports = {
 	  new MiniCssExtractPlugin({
       filename: devMode ? '[name].bundle.css' : 'app.bundle.[hash].css',
       chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
-    }),
-    new webpack.ProvidePlugin({
-      jQuery: 'jquery',
-      $: 'jquery',
-      jquery: 'jquery'
-    })
-	]
+    })	
+  ]
 }
